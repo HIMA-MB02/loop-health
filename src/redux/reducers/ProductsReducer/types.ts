@@ -29,8 +29,8 @@ export const FilterDataKeys = {
 };
 
 export const DiscountTypes = {
-    MORE_THAN_50: 'MORE_THAN_50',
-    LESS_THAN_50: 'LESS_THAN_50'
+    MORE_THAN_50: '> 50% off',
+    LESS_THAN_50: '< 50% off>'
 };
 
 export interface IFilterError {

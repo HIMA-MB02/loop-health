@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 import { useDispatch } from 'react-redux';
 import { setSelectedFilters } from '../../../redux/actions';
 import { ICheckboxForm } from './types';
@@ -11,30 +12,34 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     const dispatch = useDispatch();
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(
-            e.currentTarget.value,
-            e.currentTarget.checked,
-            filterDataKey
+        dispatch(
+            setSelectedFilters(
+                filterDataKey,
+                e.currentTarget.value,
+                e.currentTarget.checked
+            )
         );
-        dispatch(setSelectedFilters(filterDataKey, e.currentTarget.value, e.currentTarget.checked))
     };
     const renderChecks = () => {
         return items.map((itemName, index) => (
-            <div className='col-12' key={`${title}-${index}`}>
-                <input type='checkbox' id={itemName} name={itemName} value={itemName} onChange={(e) => handleCheck(e)}/>
+            <div className='check-row' key={`${title}-${index}`}>
+                <input
+                    type='checkbox'
+                    className='mr-1'
+                    id={itemName}
+                    name={itemName}
+                    value={itemName}
+                    onChange={(e) => handleCheck(e)}
+                />
                 <label htmlFor={itemName}>{itemName}</label>
             </div>
         ));
     };
     return (
-        <>
-            <div className='container'>
-                <div className='row'>
-                    <div className='col-12'>{title}</div>
-                </div>
-                <div className='row'>{renderChecks()}</div>
-            </div>
-        </>
+        <div className='filter-box'>
+            <div className='filter-row f-title'>{title}</div>
+            <div className='filter-row'>{renderChecks()}</div>
+        </div>
     );
 };
 

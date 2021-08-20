@@ -1,0 +1,21 @@
+.filter-box {
+    min-width: 20vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 1rem;
+}
+
+.filter-row {
+    width: 100%;
+}
+
+.f-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.check-row {
+    margin: 0.3rem;
+}

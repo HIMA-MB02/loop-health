@@ -1,9 +1,9 @@
 import { ReduxState } from '..';
 import getAPI from '../../api/getAPI';
 import { getCategotiesFromObject } from '../../utils';
-import { FilterDataKeys, IFilter, IFilterData } from '../reducers/types';
+import { FilterDataKeys, IFilter, IFilterData } from '../reducers/ProductsReducer/types';
 import { AppDispatch } from '../store';
-import { ACTION_TYPES } from './types';
+import { ACTION_TYPES } from './action.types';
 // import { ACTION_TYPES } from './types';
 
 let api = 'https://demo7242716.mockable.io/products';
@@ -100,7 +100,11 @@ export const setSelectedFilters = (
         const selectedFilters: IFilterData =
             getState().productsReducer.selectedFilters;
         const updatedFilters: IFilterData = updateFilter(filterValue, filterDataKey, selectedFilters);
-        console.log(updatedFilters);
-
+        dispatch({
+            type: ACTION_TYPES.SET_SELECTED_FILTERS,
+            payload: {
+                selectedFilters: updatedFilters
+            }
+        })
     };
 };

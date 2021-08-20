@@ -1,5 +1,5 @@
-import { ACTION_TYPES } from '../actions/types';
-import { initialFilterData, initialFilter } from './initialData';
+import { ACTION_TYPES } from '../../actions/action.types';
+import { initialFilterData, initialFilter } from '../initialData';
 import { IAction, IProductsReducerState } from './types';
 
 const initialState: IProductsReducerState = {
@@ -16,6 +16,11 @@ const productsReducer = (
             return {
                 ..._state,
                 filters: payload.filters
+            };
+        case ACTION_TYPES.SET_SELECTED_FILTERS:
+            return {
+                ..._state,
+                selectedFilters: payload.selectedFilters
             }
         default:
             return _state;

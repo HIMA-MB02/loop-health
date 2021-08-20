@@ -1,4 +1,4 @@
-import { DiscountTypes, IFilterData } from '../redux/reducers/types';
+import { DiscountTypes, IFilterData } from '../redux/reducers/ProductsReducer/types';
 
 const getCategotiesFromObject = (products: any[]): IFilterData => {
     let filterData: IFilterData = {

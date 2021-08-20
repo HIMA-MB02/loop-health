@@ -1,4 +1,4 @@
-import { IFilter, IFilterData } from './types';
+import { IFilter, IFilterData } from './ProductsReducer/types';
 
 
 export const initialFilterData: IFilterData = {

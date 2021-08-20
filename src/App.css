@@ -1,0 +1,7 @@
+.filter-flex {
+    flex-shrink: 0;
+}
+
+.products-flex {
+    flex-grow: 1;
+}
