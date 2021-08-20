@@ -21,7 +21,15 @@ const productsReducer = (
             return {
                 ..._state,
                 selectedFilters: payload.selectedFilters
-            }
+            };
+        case ACTION_TYPES.SET_FILTER_LOADING:
+            return {
+                ..._state,
+                filters: {
+                    ..._state.filters,
+                    loading: payload.loading
+                }
+            };
         default:
             return _state;
     }

@@ -13,9 +13,16 @@
 
 .f-title {
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
 }
 
 .check-row {
     margin: 0.3rem;
+    margin-left: 1rem;
+}
+
+.f-divider {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
 }

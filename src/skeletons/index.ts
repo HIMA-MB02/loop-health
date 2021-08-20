@@ -1,5 +1,3 @@
-import SkeletonCryptoListRow from './SkeletonCryptoListRow';
+import FilterListSkeleton from './FilterListSkeleton';
 
-export {
-    SkeletonCryptoListRow
-}
+export { FilterListSkeleton };

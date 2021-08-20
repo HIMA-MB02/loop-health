@@ -4,34 +4,51 @@ import { getCategotiesFromObject } from '../../utils';
 import { FilterDataKeys, IFilter, IFilterData } from '../reducers/ProductsReducer/types';
 import { AppDispatch } from '../store';
 import { ACTION_TYPES } from './action.types';
-// import { ACTION_TYPES } from './types';
 
 let api = 'https://demo7242716.mockable.io/products';
+
 
 export const fetchCategories = () => {
     return async (dispatch: AppDispatch) => {
         try {
             const result = await getAPI(api);
-            const filterData: IFilterData = getCategotiesFromObject(
-                result.products
-            );
-            const filters: IFilter = {
-                data: filterData,
-                error: null,
-                loading: false
-            };
-            dispatch({
-                type: ACTION_TYPES.SET_FILTER_DATA,
-                payload: {
-                    filters
-                }
-            });
+            if (result.products) {
+                const filterData: IFilterData = await getCategotiesFromObject(
+                    result.products
+                );
+                const filters: IFilter = {
+                    data: filterData,
+                    error: null,
+                    loading: false
+                };
+                dispatch({
+                    type: ACTION_TYPES.SET_FILTER_DATA,
+                    payload: {
+                        filters
+                    }
+                });
+            } else {
+                const filters: IFilter = {
+                    data: null,
+                    error: {
+                        message: 'Something went wrong!',
+                        statusCode: 400
+                    },
+                    loading: false
+                };
+                dispatch({
+                    type: ACTION_TYPES.SET_FILTER_DATA,
+                    payload: {
+                        filters
+                    }
+                });
+            }
         } catch (e) {
             const filters: IFilter = {
                 data: null,
                 error: {
-                    message: e.message,
-                    statusCode: e.statusCode
+                    message: e,
+                    statusCode: 400
                 },
                 loading: false
             };
@@ -108,3 +125,12 @@ export const setSelectedFilters = (
         })
     };
 };
+
+export const setFilterLoading = (isLoading: boolean) => {
+    return {
+        type: ACTION_TYPES.SET_FILTER_LOADING,
+        payload: {
+            loading: isLoading
+        }
+    }
+}
