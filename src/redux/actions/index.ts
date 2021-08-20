@@ -1,136 +1,127 @@
 import { ReduxState } from '..';
 import getAPI from '../../api/getAPI';
 import { getCategotiesFromObject } from '../../utils';
-import { FilterDataKeys, IFilter, IFilterData } from '../reducers/ProductsReducer/types';
+import updateFilter from '../../utils/updateFilter';
+import {
+    IFilterData, IProductData
+} from '../reducers/ProductsReducer/types';
 import { AppDispatch } from '../store';
 import { ACTION_TYPES } from './action.types';
 
 let api = 'https://demo7242716.mockable.io/products';
 
+/** ACTIONS FOR FILTERS */
 
-export const fetchCategories = () => {
+// Fetches the list of menu items to be displayed
+export const fetchFilters = () => {
     return async (dispatch: AppDispatch) => {
         try {
             const result = await getAPI(api);
             if (result.products) {
-                const filterData: IFilterData = await getCategotiesFromObject(
+                console.log(result.products);
+                const filterData: IFilterData = getCategotiesFromObject(
                     result.products
                 );
-                const filters: IFilter = {
-                    data: filterData,
-                    error: null,
-                    loading: false
-                };
                 dispatch({
                     type: ACTION_TYPES.SET_FILTER_DATA,
                     payload: {
-                        filters
+                        filters: {
+                            data: filterData,
+                            error: null,
+                            loading: false
+                        }
                     }
                 });
             } else {
-                const filters: IFilter = {
-                    data: null,
-                    error: {
-                        message: 'Something went wrong!',
-                        statusCode: 400
-                    },
-                    loading: false
-                };
-                dispatch({
-                    type: ACTION_TYPES.SET_FILTER_DATA,
-                    payload: {
-                        filters
-                    }
-                });
+                throw new Error('Something went wrong!');
             }
         } catch (e) {
-            const filters: IFilter = {
-                data: null,
-                error: {
-                    message: e,
-                    statusCode: 400
-                },
-                loading: false
-            };
+            const msg = e instanceof Error ? e.message : e;
             dispatch({
                 type: ACTION_TYPES.SET_FILTER_DATA,
                 payload: {
-                    filters
+                    filters: {
+                        data: null,
+                        error: {
+                            message: msg,
+                            statusCode: 400
+                        },
+                        loading: false
+                    }
                 }
             });
         }
     };
 };
 
-const updateFilter = (filterValue: string, filterDataKey: string, selectedFilters: IFilterData) => {
-        switch (filterDataKey) {
-            case FilterDataKeys.categories:
-                if (selectedFilters.categories.includes(filterValue)) {
-                    selectedFilters.categories =
-                        selectedFilters.categories.filter(
-                            (value) => value !== filterValue
-                        );
-                } else {
-                    selectedFilters.categories.push(filterValue);
-                }
-                break;
-            case FilterDataKeys.brands:
-                if (selectedFilters.brands.includes(filterValue)) {
-                    selectedFilters.brands = selectedFilters.brands.filter(
-                        (value) => value !== filterValue
-                    );
-                } else {
-                    selectedFilters.brands.push(filterValue);
-                }
-                break;
-            case FilterDataKeys.discounts:
-                if (selectedFilters.discounts.includes(filterValue)) {
-                    selectedFilters.discounts =
-                        selectedFilters.discounts.filter(
-                            (value) => value !== filterValue
-                        );
-                } else {
-                    selectedFilters.discounts.push(filterValue);
-                }
-                break;
-            case FilterDataKeys.genders:
-                if (selectedFilters.genders.includes(filterValue)) {
-                    selectedFilters.genders = selectedFilters.genders.filter(
-                        (value) => value !== filterValue
-                    );
-                } else {
-                    selectedFilters.genders.push(filterValue);
-                }
-                break;
-            default:
-                break;
-        }
-    return selectedFilters;
-}
 
+// Updates the seleted filters in the redux store.
 export const setSelectedFilters = (
     filterDataKey: string,
-    filterValue: string,
-    filterIsChecked: boolean
+    filterValue: string
 ) => {
     return (dispatch: AppDispatch, getState: () => ReduxState) => {
         const selectedFilters: IFilterData =
             getState().productsReducer.selectedFilters;
-        const updatedFilters: IFilterData = updateFilter(filterValue, filterDataKey, selectedFilters);
+        const updatedFilters: IFilterData = updateFilter(
+            filterValue,
+            filterDataKey,
+            selectedFilters
+        );
         dispatch({
             type: ACTION_TYPES.SET_SELECTED_FILTERS,
             payload: {
                 selectedFilters: updatedFilters
             }
-        })
+        });
     };
 };
 
+// self explainatory
 export const setFilterLoading = (isLoading: boolean) => {
     return {
         type: ACTION_TYPES.SET_FILTER_LOADING,
         payload: {
             loading: isLoading
         }
-    }
-}
+    };
+};
+
+
+/** ACTIONS FOR PRODUCTS */
+export const fetchProducts = () => {
+    return async (dispatch: AppDispatch) => {
+        try {
+            const result = await getAPI(api);
+            if (result.products) {
+                dispatch({
+                    type: ACTION_TYPES.SET_PRODUCTS_DATA,
+                    payload: {
+                        products: {
+                            data: result.products as IProductData[],
+                            error: null,
+                            loading: false
+                        }
+                    }
+                });
+            } else {
+                throw new Error('Something went wrong!');
+            }
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : e;
+            dispatch({
+                type: ACTION_TYPES.SET_PRODUCTS_DATA,
+                payload: {
+                    products: {
+                        data: null,
+                        error: {
+                            message: msg,
+                            statusCode: 400
+                        },
+                        loading: false
+                    }
+                }
+            });
+        }
+    };
+};

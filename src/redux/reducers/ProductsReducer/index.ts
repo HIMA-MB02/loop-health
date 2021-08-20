@@ -1,10 +1,11 @@
 import { ACTION_TYPES } from '../../actions/action.types';
-import { initialFilterData, initialFilter } from '../initialData';
+import { initialFilterData, initialFilter, initialProducts } from './initialData';
 import { IAction, IProductsReducerState } from './types';
 
 const initialState: IProductsReducerState = {
     filters: initialFilter,
-    selectedFilters: initialFilterData
+    selectedFilters: initialFilterData,
+    products: initialProducts
 };
 
 const productsReducer = (
@@ -30,6 +31,11 @@ const productsReducer = (
                     loading: payload.loading
                 }
             };
+        case ACTION_TYPES.SET_PRODUCTS_DATA:
+            return {
+                ..._state,
+                products: payload.products
+            }
         default:
             return _state;
     }

@@ -6,11 +6,31 @@ export interface IAction {
 export interface IProductsReducerState {
     filters: IFilter,
     selectedFilters: IFilterData
+    products?: IProducts
 }
 
+export interface IProducts {
+    data: IProductData[] | null;
+    error: IError | null;
+    loading: boolean;
+}
+
+export interface IProductData {
+    additionalInfo: string;
+    brand: string;
+    category: string;
+    effectiveDiscountAmountAfterTax: number;
+    discountDisplayLabel: string;
+    gender: string;
+    productName: string;
+    mrp: number;
+    price: number;
+    rating: number;
+    ratingCount: number;
+}
 export interface IFilter {
     data: IFilterData | null;
-    error: IFilterError | null;
+    error: IError | null;
     loading: boolean;
 }
 
@@ -33,7 +53,7 @@ export const DiscountTypes = {
     LESS_THAN_50: '< 50% off>'
 };
 
-export interface IFilterError {
+export interface IError {
     message: string;
     statusCode: number;
 }

@@ -18,13 +18,7 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     );
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(
-            setSelectedFilters(
-                filterDataKey,
-                e.currentTarget.value,
-                e.currentTarget.checked
-            )
-        );
+        dispatch(setSelectedFilters(filterDataKey, e.currentTarget.value));
     };
     const renderSkeleton = () => {
         return <FilterListSkeleton times={5} />;

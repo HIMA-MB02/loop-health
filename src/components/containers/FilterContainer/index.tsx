@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../redux';
-import { fetchCategories, setFilterLoading } from '../../../redux/actions';
+import { fetchFilters, setFilterLoading } from '../../../redux/actions';
 import { FilterDataKeys } from '../../../redux/reducers/ProductsReducer/types';
 import { CheckboxForm } from '../../atoms';
 
@@ -14,7 +14,7 @@ const FilterContainer: React.FunctionComponent = () => {
 
     React.useEffect(() => {
         dispatch(setFilterLoading(true));
-        dispatch(fetchCategories());
+        dispatch(fetchFilters());
     }, [dispatch]);
     return (
         <div className='mb-2 filter-bar'>
