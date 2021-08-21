@@ -36,6 +36,14 @@ const productsReducer = (
                 ..._state,
                 products: payload.products
             }
+        case ACTION_TYPES.SET_PRODUCTS_LOADING:
+            return {
+                ..._state,
+                products: {
+                    ..._state.products,
+                    loading: payload.loading
+                }
+            }
         default:
             return _state;
     }

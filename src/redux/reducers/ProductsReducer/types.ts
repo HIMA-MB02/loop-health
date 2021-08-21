@@ -6,7 +6,7 @@ export interface IAction {
 export interface IProductsReducerState {
     filters: IFilter,
     selectedFilters: IFilterData
-    products?: IProducts
+    products: IProducts
 }
 
 export interface IProducts {
@@ -27,6 +27,7 @@ export interface IProductData {
     price: number;
     rating: number;
     ratingCount: number;
+    searchImage: string;
 }
 export interface IFilter {
     data: IFilterData | null;

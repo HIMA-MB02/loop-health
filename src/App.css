@@ -10,3 +10,10 @@
 .products-flex {
     flex-grow: 1;
 }
+
+.products-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}

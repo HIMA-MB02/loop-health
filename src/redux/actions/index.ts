@@ -1,7 +1,6 @@
 import { ReduxState } from '..';
 import getAPI from '../../api/getAPI';
-import { getCategotiesFromObject } from '../../utils';
-import updateFilter from '../../utils/updateFilter';
+import { getCategotiesFromObject, updateFilter } from '../../utils';
 import {
     IFilterData, IProductData
 } from '../reducers/ProductsReducer/types';
@@ -87,6 +86,16 @@ export const setFilterLoading = (isLoading: boolean) => {
     };
 };
 
+// self explainatory
+export const setProductsLoading = (isLoading: boolean) => {
+    return {
+        type: ACTION_TYPES.SET_PRODUCTS_LOADING,
+        payload: {
+            loading: isLoading
+        }
+    };
+}
+
 
 /** ACTIONS FOR PRODUCTS */
 export const fetchProducts = () => {
@@ -94,6 +103,7 @@ export const fetchProducts = () => {
         try {
             const result = await getAPI(api);
             if (result.products) {
+                console.log(result.products as IProductData[]);
                 dispatch({
                     type: ACTION_TYPES.SET_PRODUCTS_DATA,
                     payload: {

@@ -1,0 +1,12 @@
+.ratings-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.rating-count {
+    font-size: 14px;
+    margin-left: 0.3rem;
+}
