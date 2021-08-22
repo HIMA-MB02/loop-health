@@ -22,9 +22,15 @@ const ProductsContainer: React.FunctionComponent = () => {
             setProductsState(
                 productsState.filter(
                     (p) =>
-                        p.brand.includes(searchValue) ||
-                        p.category.includes(searchValue) ||
-                        p.productName.includes(searchValue)
+                        p.brand
+                            .toLowerCase()
+                            .includes(searchValue.toLowerCase()) ||
+                        p.category
+                            .toLowerCase()
+                            .includes(searchValue.toLowerCase()) ||
+                        p.productName
+                            .toLowerCase()
+                            .includes(searchValue.toLowerCase())
                 )
             );
         } else if (!searchValue && products.data) {
@@ -54,6 +60,7 @@ const ProductsContainer: React.FunctionComponent = () => {
             {productsState && !!productsState.length && renderProducts()}
             {products.loading && <ProductCardListSkeleton times={8} />}
             {products.error && <div className='text-danger'>{products.error.message}</div>}
+            {!products.loading && !productsState.length && <h2 className='text-danger m-3'>Nothing Found!</h2>}
         </>
     );
 }
