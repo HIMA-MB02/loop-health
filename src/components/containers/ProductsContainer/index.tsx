@@ -53,6 +53,7 @@ const ProductsContainer: React.FunctionComponent = () => {
         <>
             {productsState && !!productsState.length && renderProducts()}
             {products.loading && <ProductCardListSkeleton times={8} />}
+            {products.error && <div className='text-danger'>{products.error.message}</div>}
         </>
     );
 }

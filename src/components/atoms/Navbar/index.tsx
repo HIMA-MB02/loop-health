@@ -8,7 +8,7 @@ const Navbar: React.FunctionComponent = () => {
     return (
         <nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
             <div className='container-fluid'>
-                <div className='navbar-brand'>Dashboard</div>
+                <div className='navbar-brand'>Clothes-Moi</div>
             </div>
             <div className='search-bar'>
                 <i className='fa fa-search fa-icon-position'></i>

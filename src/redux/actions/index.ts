@@ -1,6 +1,10 @@
 import { ReduxState } from '..';
 import getAPI from '../../api/getAPI';
-import { getCategotiesFromObject, getFilteredProducts, updateFilter } from '../../utils';
+import {
+    getCategotiesFromObject,
+    getFilteredProducts,
+    updateFilter
+} from '../../utils';
 import {
     IFilterData,
     IProductData,
@@ -9,7 +13,7 @@ import {
 import { AppDispatch } from '../store';
 import { ACTION_TYPES } from './action.types';
 
-let api = 'https://demo7242716.mockable.io/products';
+let api = process.env.REACT_APP_DOMAIN ? process.env.REACT_APP_DOMAIN : '';
 
 // Fetches the list of menu items to be displayed
 export const fetchFilters = () => {
@@ -67,7 +71,7 @@ export const setSelectedFilters = (
         );
         let filteredProducts: IProductData[] | null =
             getState().productsReducer.products.data;
-        
+
         if (filteredProducts) {
             filteredProducts = getFilteredProducts(
                 filteredProducts,
@@ -155,5 +159,5 @@ export const setSearchValue = (value: string) => {
         payload: {
             searchValue: value
         }
-    }
+    };
 };
