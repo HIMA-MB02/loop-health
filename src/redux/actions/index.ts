@@ -1,8 +1,9 @@
 import { ReduxState } from '..';
 import getAPI from '../../api/getAPI';
-import { getCategotiesFromObject, updateFilter } from '../../utils';
+import { getCategotiesFromObject, getFilteredProducts, updateFilter } from '../../utils';
 import {
-    IFilterData, IProductData
+    IFilterData,
+    IProductData
 } from '../reducers/ProductsReducer/types';
 import { AppDispatch } from '../store';
 import { ACTION_TYPES } from './action.types';
@@ -17,7 +18,6 @@ export const fetchFilters = () => {
         try {
             const result = await getAPI(api);
             if (result.products) {
-                console.log(result.products);
                 const filterData: IFilterData = getCategotiesFromObject(
                     result.products
                 );
@@ -53,7 +53,6 @@ export const fetchFilters = () => {
     };
 };
 
-
 // Updates the seleted filters in the redux store.
 export const setSelectedFilters = (
     filterDataKey: string,
@@ -67,10 +66,25 @@ export const setSelectedFilters = (
             filterDataKey,
             selectedFilters
         );
+        let filteredProducts: IProductData[] | null =
+            getState().productsReducer.products.data;
+        
+        if (filteredProducts) {
+            filteredProducts = getFilteredProducts(
+                filteredProducts,
+                updatedFilters
+            );
+        }
+        console.log(updatedFilters, filteredProducts?.length);
         dispatch({
             type: ACTION_TYPES.SET_SELECTED_FILTERS,
             payload: {
-                selectedFilters: updatedFilters
+                selectedFilters: updatedFilters,
+                filteredProducts: {
+                    data: filteredProducts,
+                    error: null,
+                    loading: false
+                }
             }
         });
     };
@@ -94,8 +108,7 @@ export const setProductsLoading = (isLoading: boolean) => {
             loading: isLoading
         }
     };
-}
-
+};
 
 /** ACTIONS FOR PRODUCTS */
 export const fetchProducts = () => {
@@ -103,11 +116,15 @@ export const fetchProducts = () => {
         try {
             const result = await getAPI(api);
             if (result.products) {
-                console.log(result.products as IProductData[]);
                 dispatch({
                     type: ACTION_TYPES.SET_PRODUCTS_DATA,
                     payload: {
                         products: {
+                            data: result.products as IProductData[],
+                            error: null,
+                            loading: false
+                        },
+                        filteredProducts: {
                             data: result.products as IProductData[],
                             error: null,
                             loading: false
@@ -123,6 +140,14 @@ export const fetchProducts = () => {
                 type: ACTION_TYPES.SET_PRODUCTS_DATA,
                 payload: {
                     products: {
+                        data: null,
+                        error: {
+                            message: msg,
+                            statusCode: 400
+                        },
+                        loading: false
+                    },
+                    filteredProducts: {
                         data: null,
                         error: {
                             message: msg,

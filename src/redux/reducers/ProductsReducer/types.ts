@@ -4,9 +4,10 @@ export interface IAction {
 }
 
 export interface IProductsReducerState {
-    filters: IFilter,
-    selectedFilters: IFilterData
-    products: IProducts
+    filters: IFilter;
+    selectedFilters: IFilterData;
+    products: IProducts;
+    filteredProducts: IProducts;
 }
 
 export interface IProducts {
@@ -20,7 +21,7 @@ export interface IProductData {
     brand: string;
     category: string;
     effectiveDiscountAmountAfterTax: number;
-    discountDisplayLabel: string;
+    effectiveDiscountPercentageAfterTax: number;
     gender: string;
     productName: string;
     mrp: number;
@@ -35,7 +36,7 @@ export interface IFilter {
     loading: boolean;
 }
 
-export interface IFilterData {
+export interface IFilterData extends Record<string, string[]> {
     categories: string[];
     genders: string[];
     brands: string[];

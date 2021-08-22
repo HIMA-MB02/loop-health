@@ -5,7 +5,6 @@ import './styles.css';
 import { IProductCard } from './types';
 
 const ProductCard: React.FunctionComponent<IProductCard> = ({ product }) => {
-    console.log(product);
     return (
         <div className='product-card'>
             <div className='product-image'>
@@ -36,8 +35,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({ product }) => {
                                 {formatRupee(
                                     product.effectiveDiscountAmountAfterTax
                                 )}{' '}
-                                {product.discountDisplayLabel.slice(0, 4)}
-                                {')'}
+                                {`(${product.effectiveDiscountPercentageAfterTax}%)`}
                             </span>
                         </>
                     )}

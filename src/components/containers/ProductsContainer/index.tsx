@@ -1,11 +1,12 @@
 import React from 'react';import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../redux';
 import { fetchProducts, setProductsLoading } from '../../../redux/actions';
+import ProductCardListSkeleton from '../../../skeletons/ProductCardListSkeleton';
 import { ProductCard } from '../../atoms';
 ;
 
 const ProductsContainer: React.FunctionComponent = () => {
-    const products = useSelector((state: ReduxState) => state.productsReducer.products);
+    const products = useSelector((state: ReduxState) => state.productsReducer.filteredProducts);
     const dispatch = useDispatch();
 
     const renderProducts = () => {
@@ -20,9 +21,10 @@ const ProductsContainer: React.FunctionComponent = () => {
     }, [dispatch]);
     return (
         <>
-            {products.data && products.data.length && (
+            {products.data && !!products.data.length && (
                 renderProducts()
             )}
+            {products.loading && <ProductCardListSkeleton times={8} />}
         </>
     );
 }

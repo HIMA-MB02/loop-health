@@ -17,6 +17,10 @@
     }
 }
 
+.skeleton.box {
+    height: 100%;
+    width: 100%;
+}
 
 .skeleton.text {
     width: 100%;

@@ -5,7 +5,8 @@ import { IAction, IProductsReducerState } from './types';
 const initialState: IProductsReducerState = {
     filters: initialFilter,
     selectedFilters: initialFilterData,
-    products: initialProducts
+    products: initialProducts,
+    filteredProducts: initialProducts
 };
 
 const productsReducer = (
@@ -21,7 +22,8 @@ const productsReducer = (
         case ACTION_TYPES.SET_SELECTED_FILTERS:
             return {
                 ..._state,
-                selectedFilters: payload.selectedFilters
+                selectedFilters: payload.selectedFilters,
+                filteredProducts: payload.filteredProducts
             };
         case ACTION_TYPES.SET_FILTER_LOADING:
             return {
@@ -34,13 +36,18 @@ const productsReducer = (
         case ACTION_TYPES.SET_PRODUCTS_DATA:
             return {
                 ..._state,
-                products: payload.products
-            }
+                products: payload.products,
+                filteredProducts: payload.filteredProducts
+            };
         case ACTION_TYPES.SET_PRODUCTS_LOADING:
             return {
                 ..._state,
                 products: {
                     ..._state.products,
+                    loading: payload.loading
+                },
+                filteredProducts: {
+                    ..._state.filteredProducts,
                     loading: payload.loading
                 }
             }
