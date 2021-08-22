@@ -70,7 +70,7 @@ export const setSelectedFilters = (
             selectedFilters
         );
         let filteredProducts: IProductData[] | null =
-            getState().productsReducer.products.data;
+            getState().productsReducer.filteredProducts.data;
 
         if (filteredProducts) {
             filteredProducts = getFilteredProducts(

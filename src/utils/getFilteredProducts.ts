@@ -4,7 +4,7 @@ import {
     IProductData
 } from '../redux/reducers/ProductsReducer/types';
 
-const getFilteredProducts = (   
+const getFilteredProducts = (
     products: IProductData[],
     selectedFilters: IFilterData
 ): IProductData[] => {
@@ -20,25 +20,43 @@ const getFilteredProducts = (
     return products.filter((product) => {
         let isValid = false;
         selectedFilters.genders.forEach((g) => {
-            if (g === product.gender) isValid = true;
+            if (g === product.gender) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
         });
         selectedFilters.categories.forEach((c) => {
-            if (c === product.category) isValid = true;
+            if (c === product.category) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
         });
         selectedFilters.brands.forEach((b) => {
-            if (b === product.brand) isValid = true;
+            if (b === product.brand) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
         });
         selectedFilters.discounts.forEach((d) => {
             if (
                 d === DiscountTypes.LESS_THAN_50 &&
                 product.effectiveDiscountPercentageAfterTax < 50
-            )
+            ) {
                 isValid = true;
+            } else {
+                isValid = false;
+            }
             if (
                 d === DiscountTypes.MORE_THAN_50 &&
                 product.effectiveDiscountPercentageAfterTax >= 50
-            )
+            ) {
                 isValid = true;
+            } else {
+                isValid = false;
+            }
         });
         return isValid;
     });

@@ -15,8 +15,6 @@ const ProductsContainer: React.FunctionComponent = () => {
     // If search and filter are independent, we could handle the search paraeters inside redux itself. Hence abstracting this logic from react.
     const [productsState, setProductsState] = React.useState<IProductData[]>([]);
     const searchValue = useSelector((state: ReduxState) => state.productsReducer.searchValue);
-    console.log(searchValue);
-
     React.useEffect(() => {
         if (searchValue && productsState.length) {
             setProductsState(
