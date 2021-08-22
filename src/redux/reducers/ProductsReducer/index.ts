@@ -6,7 +6,8 @@ const initialState: IProductsReducerState = {
     filters: initialFilter,
     selectedFilters: initialFilterData,
     products: initialProducts,
-    filteredProducts: initialProducts
+    filteredProducts: initialProducts,
+    searchValue: ''
 };
 
 const productsReducer = (
@@ -50,6 +51,11 @@ const productsReducer = (
                     ..._state.filteredProducts,
                     loading: payload.loading
                 }
+            }
+        case ACTION_TYPES.SET_SEARCH_VALUE:
+            return {
+                ..._state,
+                searchValue: payload.searchValue
             }
         default:
             return _state;

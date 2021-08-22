@@ -8,6 +8,7 @@ export interface IProductsReducerState {
     selectedFilters: IFilterData;
     products: IProducts;
     filteredProducts: IProducts;
+    searchValue: string;
 }
 
 export interface IProducts {

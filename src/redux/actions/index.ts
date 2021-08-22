@@ -3,14 +3,13 @@ import getAPI from '../../api/getAPI';
 import { getCategotiesFromObject, getFilteredProducts, updateFilter } from '../../utils';
 import {
     IFilterData,
-    IProductData
+    IProductData,
+    IProducts
 } from '../reducers/ProductsReducer/types';
 import { AppDispatch } from '../store';
 import { ACTION_TYPES } from './action.types';
 
 let api = 'https://demo7242716.mockable.io/products';
-
-/** ACTIONS FOR FILTERS */
 
 // Fetches the list of menu items to be displayed
 export const fetchFilters = () => {
@@ -75,7 +74,6 @@ export const setSelectedFilters = (
                 updatedFilters
             );
         }
-        console.log(updatedFilters, filteredProducts?.length);
         dispatch({
             type: ACTION_TYPES.SET_SELECTED_FILTERS,
             payload: {
@@ -110,53 +108,52 @@ export const setProductsLoading = (isLoading: boolean) => {
     };
 };
 
-/** ACTIONS FOR PRODUCTS */
+// fetches list of products from the database
 export const fetchProducts = () => {
     return async (dispatch: AppDispatch) => {
         try {
             const result = await getAPI(api);
             if (result.products) {
+                const prods: IProducts = {
+                    data: result.products as IProductData[],
+                    error: null,
+                    loading: false
+                };
                 dispatch({
                     type: ACTION_TYPES.SET_PRODUCTS_DATA,
                     payload: {
-                        products: {
-                            data: result.products as IProductData[],
-                            error: null,
-                            loading: false
-                        },
-                        filteredProducts: {
-                            data: result.products as IProductData[],
-                            error: null,
-                            loading: false
-                        }
+                        products: prods,
+                        filteredProducts: prods
                     }
                 });
             } else {
                 throw new Error('Something went wrong!');
             }
         } catch (e) {
-            const msg = e instanceof Error ? e.message : e;
+            const prods = {
+                data: null,
+                error: {
+                    message: e instanceof Error ? e.message : e,
+                    statusCode: 400
+                },
+                loading: false
+            };
             dispatch({
                 type: ACTION_TYPES.SET_PRODUCTS_DATA,
                 payload: {
-                    products: {
-                        data: null,
-                        error: {
-                            message: msg,
-                            statusCode: 400
-                        },
-                        loading: false
-                    },
-                    filteredProducts: {
-                        data: null,
-                        error: {
-                            message: msg,
-                            statusCode: 400
-                        },
-                        loading: false
-                    }
+                    products: prods,
+                    filteredProducts: prods
                 }
             });
         }
     };
+};
+
+export const setSearchValue = (value: string) => {
+    return {
+        type: ACTION_TYPES.SET_SEARCH_VALUE,
+        payload: {
+            searchValue: value
+        }
+    }
 };

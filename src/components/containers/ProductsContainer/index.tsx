@@ -1,29 +1,57 @@
 import React from 'react';import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../../redux';
 import { fetchProducts, setProductsLoading } from '../../../redux/actions';
+import { IProductData } from '../../../redux/reducers/ProductsReducer/types';
 import ProductCardListSkeleton from '../../../skeletons/ProductCardListSkeleton';
 import { ProductCard } from '../../atoms';
 ;
 
 const ProductsContainer: React.FunctionComponent = () => {
-    const products = useSelector((state: ReduxState) => state.productsReducer.filteredProducts);
     const dispatch = useDispatch();
+    const products = useSelector((state: ReduxState) => state.productsReducer.filteredProducts);
 
-    const renderProducts = () => {
-        return products.data?.map((product) => (
-            <ProductCard product={product} />
-        ));
-    }
+    // NOTE: Since search and filter functionaliy are inter-dependent, we need a useState inside the component, 
+    // so as to apply search parameters inside this component only once data has been filtered inside redux.
+    // If search and filter are independent, we could handle the search paraeters inside redux itself. Hence abstracting this logic from react.
+    const [productsState, setProductsState] = React.useState<IProductData[]>([]);
+    const searchValue = useSelector((state: ReduxState) => state.productsReducer.searchValue);
+    console.log(searchValue);
+
+    React.useEffect(() => {
+        if (searchValue && productsState.length) {
+            setProductsState(
+                productsState.filter(
+                    (p) =>
+                        p.brand.includes(searchValue) ||
+                        p.category.includes(searchValue) ||
+                        p.productName.includes(searchValue)
+                )
+            );
+        } else if (!searchValue && products.data) {
+            setProductsState(products.data);
+        }
+    }, [searchValue, productsState, products]);
+
+    React.useEffect(() => {
+        if (products.data && products.data.length) {
+            setProductsState(products.data);
+        }
+    }, [products]);
 
     React.useEffect(() => {
         dispatch(setProductsLoading(true));
         dispatch(fetchProducts());
     }, [dispatch]);
+
+    const renderProducts = () => {
+        return productsState.map((product) => (
+            <ProductCard product={product} />
+        ));
+    }
+
     return (
         <>
-            {products.data && !!products.data.length && (
-                renderProducts()
-            )}
+            {productsState && !!productsState.length && renderProducts()}
             {products.loading && <ProductCardListSkeleton times={8} />}
         </>
     );
