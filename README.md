@@ -11,4 +11,6 @@ This is a React.js with TypeScript application.
 Hosted with Firebase here: https://clothe-moi.web.app
 
 ## TO RUN THE APPLICATION
-npm start OR yarn start
+1. Clone into the repo
+2. Run `npm start` OR `yarn start` from the root directory.
+
