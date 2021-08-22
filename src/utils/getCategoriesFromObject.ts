@@ -11,9 +11,8 @@ const getCategotiesFromObject = (products: any[]): IFilterData => {
     filterData = products.reduce(
         (previousFilters: IFilterData, currentValue) => {
             const newFilters = { ...previousFilters };
-            if (!previousFilters.brands.includes(currentValue.brand)) {
-            }
-            newFilters.brands.push(currentValue.brand);
+            if (!previousFilters.brands.includes(currentValue.brand))
+                newFilters.brands.push(currentValue.brand);
             if (!previousFilters.categories.includes(currentValue.category))
                 newFilters.categories.push(currentValue.category);
             if (!previousFilters.genders.includes(currentValue.gender))

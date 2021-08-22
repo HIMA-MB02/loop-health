@@ -23,9 +23,7 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     const [showSearch, setShowSearch] = React.useState(false);
 
     React.useEffect(() => {
-        if (items.length) {
-            setFilterItems(items);
-        }
+        setFilterItems(items);
     }, [items]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
