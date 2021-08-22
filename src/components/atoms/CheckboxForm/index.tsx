@@ -1,10 +1,10 @@
 import React from 'react';
 import './styles.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedFilters } from '../../../redux/actions';
 import { ICheckboxForm } from './types';
 import { ReduxState } from '../../../redux';
 import { FilterListSkeleton } from '../../../skeletons';
-import Checkbox from '../Checkbox';
 
 const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     title,
@@ -12,8 +12,12 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     items,
     displayBorderBottom = true
 }) => {
+    const dispatch = useDispatch();
     const isLoading = useSelector(
         (state: ReduxState) => state.productsReducer.filters.loading
+    );
+    const selectedFilters = useSelector(
+        (state: ReduxState) => state.productsReducer.selectedFilters
     );
     const [filterItems, setFilterItems] = React.useState<string[]>([]);
     const [showSearch, setShowSearch] = React.useState(false);
@@ -33,6 +37,9 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
             );
         }
     };
+    const handleCheck = (itemName: string) => {
+        dispatch(setSelectedFilters(filterDataKey, itemName));
+    };
     const renderSkeleton = () => {
         return <FilterListSkeleton times={5} />;
     };
@@ -40,11 +47,19 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
         return filterItems.map(
             (itemName, index) =>
                 index < 10 && (
-                    <Checkbox
-                        itemName={itemName}
-                        filterDataKey={filterDataKey}
-                        key={`${title}-${index}`}
-                    />
+                    <div className='check-row' key={`${title}-${index}`}>
+                        <button
+                            className={`mr-1 check-style ${
+                                selectedFilters[filterDataKey].includes(
+                                    itemName
+                                )
+                                    ? 'btn-checked'
+                                    : ''
+                            }`}
+                            onClick={() => handleCheck(itemName)}
+                        ></button>
+                        <label htmlFor={itemName}>{itemName}</label>
+                    </div>
                 )
         );
     };

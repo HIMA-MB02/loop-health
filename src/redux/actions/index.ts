@@ -81,7 +81,7 @@ export const setSelectedFilters = (
         dispatch({
             type: ACTION_TYPES.SET_SELECTED_FILTERS,
             payload: {
-                selectedFilters: updatedFilters,
+                selectedFilters: {...updatedFilters},
                 filteredProducts: {
                     data: filteredProducts,
                     error: null,
