@@ -17,49 +17,63 @@ const getFilteredProducts = (
         )
     )
         return products;
-    return products.filter((product) => {
-        let isValid = false;
-        selectedFilters.genders.forEach((g) => {
-            if (g === product.gender) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
+
+    let filteredProducts: IProductData[] = [...products];
+        console.log(filteredProducts, selectedFilters.genders);
+
+    if (selectedFilters.genders.length)
+        filteredProducts = filteredProducts.filter((product) => {
+            let isValid = false;
+            selectedFilters.genders.forEach((g) => {
+                if (g === product.gender) {
+                    isValid = true;
+                }
+            });
+            return isValid;
         });
-        selectedFilters.categories.forEach((c) => {
-            if (c === product.category) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
+
+    if (selectedFilters.categories.length)
+        filteredProducts = filteredProducts.filter((product) => {
+            let isValid = false;
+            selectedFilters.categories.forEach((c) => {
+                if (c === product.category) {
+                    isValid = true;
+                }
+            });
+            return isValid;
         });
-        selectedFilters.brands.forEach((b) => {
-            if (b === product.brand) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
-        });
-        selectedFilters.discounts.forEach((d) => {
-            if (
-                d === DiscountTypes.LESS_THAN_50 &&
-                product.effectiveDiscountPercentageAfterTax < 50
-            ) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
-            if (
-                d === DiscountTypes.MORE_THAN_50 &&
-                product.effectiveDiscountPercentageAfterTax >= 50
-            ) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
-        });
-        return isValid;
-    });
+        console.log(filteredProducts);
+        if (selectedFilters.brands.length)
+            filteredProducts = filteredProducts.filter((product) => {
+                let isValid = false;
+                selectedFilters.brands.forEach((b) => {
+                    if (b === product.brand) {
+                        isValid = true;
+                    }
+                });
+                return isValid;
+            });
+
+        if (selectedFilters.discounts.length)
+            filteredProducts = filteredProducts.filter((product) => {
+                let isValid = false;
+                selectedFilters.discounts.forEach((d) => {
+                    if (
+                        d === DiscountTypes.LESS_THAN_50 &&
+                        product.effectiveDiscountPercentageAfterTax < 50
+                    ) {
+                        isValid = true;
+                    }
+                    if (
+                        d === DiscountTypes.MORE_THAN_50 &&
+                        product.effectiveDiscountPercentageAfterTax >= 50
+                    ) {
+                        isValid = true;
+                    }
+                });
+                return isValid;
+            });
+    return filteredProducts;
 };
 
 export default getFilteredProducts;

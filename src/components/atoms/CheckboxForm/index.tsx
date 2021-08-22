@@ -1,10 +1,10 @@
 import React from 'react';
 import './styles.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedFilters } from '../../../redux/actions';
+import { useSelector } from 'react-redux';
 import { ICheckboxForm } from './types';
 import { ReduxState } from '../../../redux';
 import { FilterListSkeleton } from '../../../skeletons';
+import Checkbox from '../Checkbox';
 
 const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     title,
@@ -12,7 +12,6 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
     items,
     displayBorderBottom = true
 }) => {
-    const dispatch = useDispatch();
     const isLoading = useSelector(
         (state: ReduxState) => state.productsReducer.filters.loading
     );
@@ -23,7 +22,7 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
         if (items.length) {
             setFilterItems(items);
         }
-    }, [items])
+    }, [items]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (items.length) {
@@ -34,9 +33,6 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
             );
         }
     };
-    const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(setSelectedFilters(filterDataKey, e.currentTarget.value));
-    };
     const renderSkeleton = () => {
         return <FilterListSkeleton times={5} />;
     };
@@ -44,17 +40,11 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
         return filterItems.map(
             (itemName, index) =>
                 index < 10 && (
-                    <div className='check-row' key={`${title}-${index}`}>
-                        <input
-                            type='checkbox'
-                            className='mr-1'
-                            id={itemName}
-                            name={itemName}
-                            value={itemName}
-                            onChange={(e) => handleCheck(e)}
-                        />
-                        <label htmlFor={itemName}>{itemName}</label>
-                    </div>
+                    <Checkbox
+                        itemName={itemName}
+                        filterDataKey={filterDataKey}
+                        key={`${title}-${index}`}
+                    />
                 )
         );
     };
@@ -88,9 +78,7 @@ const CheckboxForm: React.FunctionComponent<ICheckboxForm> = ({
                     </p>
                 )}
                 {!filterItems.length && !isLoading && (
-                    <p className='text-danger check-row'>
-                        Nothing found!
-                    </p>
+                    <p className='text-danger check-row'>Nothing found!</p>
                 )}
                 {displayBorderBottom && <hr className='f-divider' />}
             </div>
